@@ -12,6 +12,7 @@ var IssueUtils = function (config) {
      */
     function formatQuestion(question) {
         var body = J2M.toJ(question);
+        
         body = body.replace(/\[[\/]*p\]/g, '');
         body = body.replace(/\[[\/]*pre\]/g, '');
         body = body.replace(/\[\/*code\]/g, '{code}');
@@ -20,6 +21,7 @@ var IssueUtils = function (config) {
     }
 
     function createIssue(stackexchangeItem) {
+        
         var body = formatQuestion(stackexchangeItem.body);
 
         var issue = {
