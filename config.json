@@ -1,0 +1,21 @@
+{
+    "jira_connection" : {
+        "username" : "",
+        "password" : "",
+        "host"     : "",
+        "version"  : "",
+        "schema"   : "",
+        "port"     : ""
+    },
+    "stackexchange_query" : {
+        "key"      : ""
+        "pagesize" : 50,
+        "tagged"   : "java",
+        "sort"     : "activity",
+        "order"    : "asc",
+        "filter"   : "!9YdnSJ*Wh"
+    },
+    "issue_template" : {
+        "project_id" : 50
+    }
+}
