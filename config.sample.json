@@ -5,17 +5,22 @@
         "host"     : "",
         "version"  : "",
         "schema"   : "",
-        "port"     : ""
+        "port"     : "",
+        "project"  : "",
+        "close_transition" : 21
     },
     "stackexchange_query" : {
-        "key"      : ""
+        "key"      : "",
         "pagesize" : 50,
-        "tagged"   : "java",
+        "tagged"   : ["aerogear"],
         "sort"     : "activity",
         "order"    : "asc",
         "filter"   : "!9YdnSJ*Wh"
     },
     "issue_template" : {
-        "project_id" : 50
+        "project_id" : 0,
+        "tracking_field" : "",
+        "issue_type" : "Epic",
+        "tag_map" : {"team-developer-experience" : ".*"}
     }
 }
