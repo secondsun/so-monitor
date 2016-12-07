@@ -25,21 +25,25 @@ var IssueUtils = function (config) {
         var body = formatQuestion(stackexchangeItem.body);
 
         var issue = {
-            "fields": {
-                "project": {
-                    "id": this.issue_template.project_id
+            fields: {
+                project: {
+                    id: this.issue_template.project_id
 
                 },
-                "summary": stackexchangeItem.title,
-                "description": "{quote}" + body + "{quote} \n\n" + stackexchangeItem.link,
-                "issuetype": {
-                    "name": "Task"
+                summary: stackexchangeItem.title,
+                description: "{quote}" + body + "{quote} \n\n" + stackexchangeItem.link,
+                issuetype: {
+                    name: this.issue_template.issue_type
                 },
-                "priority": {
-                    "name": "Minor"
+                priority: {
+                    name: "Minor"
                 }
+                
             }
         };
+        
+        issue["fields"][this.issue_template.tracking_field] = stackexchangeItem.question_id + "";
+        
         return issue;
     }
 
