@@ -26,7 +26,7 @@ app.use('/mbaas', mbaasExpress.mbaas);
 // Note: important that this is added just before your own Routes
 app.use(mbaasExpress.fhmiddleware());
 
-cron.scheduleJob('*/5 * * * * *', function () {
+cron.scheduleJob('0 */5 * * * *', function () {
 
   var config = require("./config.json")
 
@@ -50,13 +50,14 @@ cron.scheduleJob('*/5 * * * * *', function () {
     };
 
     // Get all the questions (http://api.stackexchange.com/docs/questions) 
-    context.questions.questions(filter, function (err, results) {
+    context.questions.questions(filter, function (err, questions) {
       if (err) throw err;
-
-      results.items.forEach(function (item) {
-
-        jiraApi.findStackOverflowQuestion(item.question_id).then(function (result) {
-          if (result.issues.length == 0) { //create issue
+      
+      questions.items.forEach(function (item) {
+        jiraApi.findStackOverflowQuestion(item.question_id).then(function (jira_result) {
+          if (!jira_result) {
+            console.log('Null result for %d - %j', item.question_id, arguments);
+          } else if (jira_result.issues && jira_result.issues.length == 0) { //create issue
             var issue = issueUtils.createIssue(item);
             return jiraApi.createIssue(issue).then(function (response) {
               console.log("✔ Created Ticket - " + config.jira_connection.schema + "://" + config.jira_connection.host + "/browse/" + response.key + " - " + response.self);
@@ -65,16 +66,19 @@ cron.scheduleJob('*/5 * * * * *', function () {
               console.log("✔ Added Label team-developer-experience");
             });
           } else { //check if answered and close
-            if (item.is_answered && result.issues[0].fields.status.name === "Open") {
-              console.log("✔ Item answered.  Closing " + result.issues[0].key);
-              return jiraApi.closeIssue(result.issues[0].key).then(function () {
-                console.log("✔ " + result.issues[0].key + " Closed ");
+            if (item.question_id == 31059149) {
+              console.log("Stop worrying");
+            }
+            if (item.is_answered && jira_result.issues[0].fields.status.name === "Open") {
+              console.log("✔ Item answered.  Closing " + jira_result.issues[0].key);
+              return jiraApi.closeIssue(jira_result.issues[0].key).then(function () {
+                console.log("✔ " + jira_result.issues[0].key + " Closed ");
               });
             }
           }
         }).catch(function (err) {
           console.log('✘ We have an error - %j', (err));
-          console.log('✘ We have an error - %s', (err));
+          console.log('✘ We have an error - %s', (err.stack));
         });
 
       });

@@ -22,7 +22,7 @@ var Jira = function (config) {
     }
 
     function findStackOverflowQuestion(question_id) {
-        var jql = "project = " + jira_config.project + " AND " + questionIdField + " = " + question_id;
+        var jql = "project = " + jira_config.project + " AND " + questionIdField + " ~ " + question_id;
         return q.npost(jira, "searchJira", [jql, {maxResults:1}]);
     }
 
