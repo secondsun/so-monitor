@@ -66,9 +66,6 @@ cron.scheduleJob('0 */5 * * * *', function () {
               console.log("✔ Added Label team-developer-experience");
             });
           } else { //check if answered and close
-            if (item.question_id == 31059149) {
-              console.log("Stop worrying");
-            }
             if (item.is_answered && jira_result.issues[0].fields.status.name === "Open") {
               console.log("✔ Item answered.  Closing " + jira_result.issues[0].key);
               return jiraApi.closeIssue(jira_result.issues[0].key).then(function () {
